@@ -10,12 +10,25 @@ def ssort(L):
         print('selecting minimum %s' % L[m])       
         L[0], L[m] = L[m], L[0]
         print('recursively sorting L=%s\n' % L[1:])
-        return [L[0]] + selection_sort(L[1:])
+        return [L[0]] + ssort(L[1:])
         
+
 def qsort(a, pivot_fn):
-    ## TO DO
-    pass
-    
+  if len(a) <= 1:
+    return a
+  else:
+    pivot = pivot_fn(a)
+    less = [x for x in a if x < pivot]
+    equal = [x for x in a if x == pivot]
+    greater = [x for x in a if x > pivot]
+
+            # Check to prevent excessive recursion without effective partitioning
+    if not less or not greater:
+                # This means all elements are equal or we're not effectively partitioning.
+      return equal if not less else less + equal if not greater else greater + equal
+
+            # Recursively apply quicksort to partitions
+    return qsort(less, pivot_fn) + equal + qsort(greater, pivot_fn)
 def time_search(sort_fn, mylist):
     """
     Return the number of milliseconds to run this
@@ -50,9 +63,9 @@ def compare_sort(sizes=[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 10
       for each method to run on each value of n
     """
     ### TODO - sorting algorithms for comparison
-    qsort_fixed_pivot = # 
-    qsort_random_pivot = #
-    tim_sort = #
+    qsort_fixed_pivot = lambda lst: qsort(lst, lambda x: x[0])
+    qsort_random_pivot = lambda lst: qsort(lst, lambda x: random.choice(x))
+    tim_sort = lambda lst: sorted(lst)
     result = []
     for size in sizes:
         # create list in ascending order
